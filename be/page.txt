@@ -1,0 +1,16 @@
+let page = 1;
+const postPerPage = 4;
+const skip = (page-1) * postPerPage;
+const paginatedURL = 
+"https://dummyjson.com/products?limit=${postPerPage}&skip=${skip}";
+
+
+Mongoose
+MyModel.find(query, fields, { skip: 10, limit: 5 }, function(err, results) { ... });
+Event.find()
+    .select('name')
+    .limit(perPage)
+    .skip(perPage * page)
+    .sort({
+        name: 'asc'
+    })

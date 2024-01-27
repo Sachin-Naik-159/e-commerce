@@ -1,0 +1,12 @@
+.custom-bg {
+  background-color: rgb(187, 195, 202) !important;
+  font-weight: bold;
+}
+
+.search-input {
+  border-radius: 0px 0px 0px 15px;
+}
+
+.search-button {
+  border-radius: 0px 15px 0px 0px;
+}

@@ -1,0 +1,10 @@
+.ancor {
+  color: black;
+  text-decoration: none;
+}
+
+.ancor:hover {
+  color: #00a0c6;
+  text-decoration: none;
+  cursor: pointer;
+}

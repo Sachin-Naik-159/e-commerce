@@ -1,0 +1,17 @@
+.card-img-top {
+  width: 18.5rem;
+  height: 400px;
+  object-fit: cover;
+  justify-content: center;
+}
+
+.card {
+  width: 18.5rem;
+  margin: auto;
+  margin-bottom: 2rem;
+}
+
+button:hover {
+  opacity: 0.6;
+  transition: 0.3s;
+}

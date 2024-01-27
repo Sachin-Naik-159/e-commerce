@@ -1,0 +1,12 @@
+.rate-star {
+  justify-content: flex-start;
+}
+
+.icon {
+  font-size: 1rem;
+  color: #ffa534;
+}
+
+p {
+  margin: 0;
+}

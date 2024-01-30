@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Button, Col, Container, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -10,22 +10,35 @@ function Login() {
   const navigate = useNavigate();
   const api_URL = process.env.REACT_APP_BASE_API_URL;
   const [user, setUser] = useState({ email: "", password: "" });
+  let cart = useSelector((state) => {
+    return state.cartReducer.cart;
+  });
 
   const subminHandler = async (e) => {
     e.preventDefault();
-    let resp = await axios.post(`${api_URL}/auth/login`, user);
-    if (resp.status === 200) {
-      //Authentication header
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + resp.data.result.token;
-
-      toast.success(resp.data.message);
-      localStorage.setItem("token", resp.data.result.token);
-      localStorage.setItem("user", JSON.stringify(resp.data.result.user));
-      dispatch({ type: "LOGIN_SUCCESS", payload: resp.data.result.user });
-      navigate("/cart");
+    if (user.email === "" || user.password === "") {
+      toast.warning("Enter Value");
     } else {
-      toast.error(resp.data.message);
+      try {
+        let resp = await axios.post(`${api_URL}/auth/login`, user);
+        if (resp.status === 200) {
+          //Authentication header
+          axios.defaults.headers.common["Authorization"] =
+            "Bearer " + resp.data.result.token;
+
+          toast.success(resp.data.message);
+          localStorage.setItem("token", resp.data.result.token);
+          localStorage.setItem("user", JSON.stringify(resp.data.result.user));
+          dispatch({ type: "LOGIN_SUCCESS", payload: resp.data.result.user });
+          if (cart.length === 0) {
+            navigate("/");
+          } else navigate("/cart");
+        }
+      } catch (err) {
+        if (err.response.status === 401) {
+          toast.error(err.response.data.message);
+        }
+      }
     }
   };
 

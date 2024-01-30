@@ -15,7 +15,9 @@ function UserList() {
   const refreshList = async () => {
     try {
       const resp = await axios.get(`${api_URL}/user/allusers`);
-      setUser(resp.data);
+      if (resp.status === 200) {
+        setUser(resp.data);
+      }
     } catch (err) {
       console.log(err);
     }

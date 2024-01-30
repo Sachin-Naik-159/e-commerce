@@ -3,7 +3,6 @@ import "./card.css";
 import Stars from "./Stars";
 import { useNavigate } from "react-router-dom";
 import BtnAddCart from "./BtnAddCart";
-import BtnRemove from "./BtnRemove";
 
 function Card({ prod }) {
   const navigate = useNavigate();
@@ -32,18 +31,17 @@ function Card({ prod }) {
           <h5 className="card-title" onClick={productPageLink}>
             {prod.name}
           </h5>
-          <Stars rate={rating} />
+          <Stars rate={rating} type={true} />
           <p className="card-text">
             <b>₹ {prod.price}</b>
           </p>
           {prod.quantity > 0 ? (
-            <BtnAddCart data={prod} />
+            <BtnAddCart data={prod} type={"Card"} />
           ) : (
             <button type="button" className="btn btn-secondary" disabled>
               Notift
             </button>
           )}
-          <BtnRemove data={prod} />
         </div>
       </div>
     </>

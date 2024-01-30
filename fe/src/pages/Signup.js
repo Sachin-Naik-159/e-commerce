@@ -15,13 +15,26 @@ function Signup() {
   });
   const subminHandler = async (e) => {
     e.preventDefault();
-    let resp = await axios.post(`${api_URL}/auth/register`, user);
-    if (resp.status === 201) {
-      toast.success(resp.data.message);
-      setUser({ name: "", email: "", username: "", password: "" });
-      navigate("/login");
+    if (
+      user.email === "" ||
+      user.password === "" ||
+      user.username === "" ||
+      user.name === ""
+    ) {
+      toast.warning("Enter Value");
     } else {
-      toast.error(resp.data.message);
+      try {
+        let resp = await axios.post(`${api_URL}/auth/register`, user);
+        if (resp.status === 201) {
+          toast.success(resp.data.message);
+          setUser({ name: "", email: "", username: "", password: "" });
+          navigate("/login");
+        }
+      } catch (err) {
+        if (err.response.status === 500 || err.response.status === 400) {
+          toast.error(err.response.data.message);
+        }
+      }
     }
   };
   return (

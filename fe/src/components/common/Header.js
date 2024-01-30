@@ -17,6 +17,10 @@ function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+
+  let cart = useSelector((state) => {
+    return state.cartReducer.cart;
+  });
   let admin = false;
   let user = useSelector((state) => {
     return state.userReducer.user;
@@ -67,7 +71,14 @@ function Header() {
             </Button>
           </Form>
           <Nav className="me-auto">
-            <Nav.Link href="/cart">Cart</Nav.Link>
+            <Nav.Link href="/cart">
+              Cart
+              {cart.length === 0 ? (
+                <></>
+              ) : (
+                <sup style={{ color: "Red" }}>{cart.length}</sup>
+              )}
+            </Nav.Link>
 
             {/* User's options */}
             {localStorage.getItem("token") ? (
@@ -97,6 +108,9 @@ function Header() {
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="/createproduct">
                       Create Product
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/prodadminlist">
+                      Edit a Product
                     </NavDropdown.Item>
                   </NavDropdown>
                 ) : (

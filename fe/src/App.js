@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
@@ -14,6 +14,8 @@ import ShippingAddress from "./pages/ShippingAddress";
 import Profile from "./pages/Profile";
 import UserList from "./pages/UserList";
 import CreateProduct from "./pages/CreateProduct";
+import ProdAdminList from "./pages/ProdAdminList";
+import EditProduct from "./pages/EditProduct";
 
 function App() {
   function DynamicRouting() {
@@ -44,11 +46,13 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/product/:id" element={<Product />} />
-        <Route path="/address" element={<ShippingAddress />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/userlist" element={<UserList />} />
+        <Route path="/product/:id" element={<Product />} />
+        <Route path="/address" element={<ShippingAddress />} />
         <Route path="/createproduct" element={<CreateProduct />} />
+        <Route path="/prodadminlist" element={<ProdAdminList />} />
+        <Route path="/editproduct/:id" element={<EditProduct />} />
       </Routes>
     );
   }
@@ -65,6 +69,7 @@ function App() {
         draggable
         pauseOnHover={false}
         theme="light"
+        transition={Zoom}
       />
       <div className="app">
         <Header />

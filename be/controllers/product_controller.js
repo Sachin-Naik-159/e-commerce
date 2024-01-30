@@ -21,27 +21,32 @@ const addProduct = async (req, res) => {
         description,
         image,
       } = req.body;
-      const newProduct = new ProductModel({
-        name,
-        price,
-        quantity,
-        catagory,
-        subcatagory: setUndef(subcatagory),
-        description: setUndef(description),
-        image: setUndef(image),
-      });
+      if (name !== "" || price !== "" || quantity !== "" || catagory !== "") {
+        const newProduct = new ProductModel({
+          name,
+          price,
+          quantity,
+          catagory,
+          subcatagory: setUndef(subcatagory),
+          description: setUndef(description),
+          image: setUndef(image),
+        });
 
-      //Finding similar product
-      const found = await ProductModel.findOne({
-        name,
-        price,
-        catagory,
-        subcatagory,
-      });
-      if (found === null) {
-        const resp = await newProduct.save({ omitUndefined: true });
-        res.status(201).json({ message: "Product Created", resp });
-      } else res.status(200).json({ message: "Product Exhist", found });
+        //Finding similar product
+        const found = await ProductModel.findOne({
+          name,
+          price,
+          catagory,
+          subcatagory,
+        });
+        if (found === null) {
+          const resp = await newProduct.save({ omitUndefined: true });
+          res.status(201).json({ message: "Product Created", resp });
+        } else res.status(200).json({ message: "Product Exhist", found });
+      } else
+        res.status(400).json({
+          message: "Name, Price, Quantity and catagory are mandatory",
+        });
     } else res.status(200).json({ message: "NotAdmin" });
   } catch (err) {
     throw err;
@@ -85,14 +90,29 @@ const rateProduct = async (req, res) => {
 //Edit a product
 const editProduct = async (req, res) => {
   try {
-    let { quantity } = req.body;
-    const _id = req.params.id;
-    let resp = await ProductModel.findOneAndUpdate(
-      { _id },
-      { $set: { quantity: quantity } },
-      { new: true }
-    ).exec();
-    res.status(200).json({ message: "Edit Success", resp });
+    if (req.user.isAdmin) {
+      let { name, price, quantity, catagory, subcatagory, description, image } =
+        req.body;
+      const _id = req.params.id;
+      let resp = await ProductModel.findOneAndUpdate(
+        { _id },
+        {
+          $set: {
+            name: setUndef(name),
+            price: setUndef(price),
+            quantity: setUndef(quantity),
+            catagory: setUndef(catagory),
+            subcatagory: setUndef(subcatagory),
+            description: setUndef(description),
+            image: setUndef(image),
+          },
+        },
+        { omitUndefined: true, new: true }
+      ).exec();
+      res.status(200).json({ message: "Edit Success", resp });
+    } else {
+      res.status(400).json({ message: "Enter Data" });
+    }
   } catch (err) {
     throw err;
   }

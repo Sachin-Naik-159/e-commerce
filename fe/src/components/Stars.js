@@ -1,14 +1,14 @@
 import React from "react";
 import "./stars.css";
 
-function Stars(prop) {
-  let rate = prop.rate.reduce((a, b) => a + b, 0) / prop.rate.length;
+function Stars({ rate, type }) {
+  let rating = rate.reduce((a, b) => a + b, 0) / rate.length;
   const ratingStar = Array.from({ length: 5 }, (v, i) => {
     return (
       <span key={i}>
-        {rate >= i + 1 ? (
+        {rating >= i + 1 ? (
           <i className="fa-solid fa-star icon"></i>
-        ) : rate >= i + 0.5 ? (
+        ) : rating >= i + 0.5 ? (
           <i className="fa-solid fa-star-half-stroke icon"></i>
         ) : (
           <i className="fa-regular fa-star icon"></i>
@@ -21,7 +21,13 @@ function Stars(prop) {
     <div className="rate-star">
       <p>
         {ratingStar}
-        {"    "}({prop.rate.length} Reviews)
+        {type ? (
+          <>
+            {"    "}({rate.length} Reviews)
+          </>
+        ) : (
+          <></>
+        )}
       </p>
     </div>
   );

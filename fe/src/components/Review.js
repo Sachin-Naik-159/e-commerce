@@ -8,7 +8,7 @@ function Review({ data }) {
         return (
           <div className="ml-2 mr-2 pt-1 pb-1 shadow rounded" key={r._id}>
             <b>{r.ratedBy.username}</b>
-            <Stars rate={[r.rate]} type={1} />
+            <Stars rate={[r.rate]} type={false} />
             <small className="text-muted">
               {` ${new Date(r.createdAt)}`.substring(4, 16)}
             </small>

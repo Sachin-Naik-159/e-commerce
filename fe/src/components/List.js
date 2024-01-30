@@ -1,27 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BtnRemove from "./BtnRemove";
 import BtnAddCart from "./BtnAddCart";
+import BtnDeleteCart from "./BtnDeleteCart";
 
-function List({ prod, count }) {
-  let jsonObj = prod.map(JSON.stringify);
-  let unqSet = new Set(jsonObj);
-  let unqProdArr = Array.from(unqSet).map(JSON.parse);
+function List({ prod }) {
+  const [inCart, setinCart] = useState();
+  const [show, setShow] = useState(true);
 
+  useEffect(() => {
+    setinCart(prod.inCart);
+    console.log(inCart);
+    // eslint-disable-next-line
+  }, []);
   return (
-    <div>
-      {unqProdArr.map((e, i) => (
-        <div className="row" key={i}>
+    <div className="row">
+      {show ? (
+        <>
           <div className="col-1">
-            <BtnRemove data={e} />
+            <BtnRemove data={prod} update={setinCart} />
           </div>
           <div className="col-2">
-            {e.name}: {count[`${e.name}`]}
+            {prod.name}: {prod.inCart}
           </div>
           <div className="col-1">
-            <BtnAddCart data={e} />
+            <BtnAddCart data={prod} update={setinCart} type={"Cart"} />
           </div>
-        </div>
-      ))}
+          <div className="col-1"></div>
+          <div className="col-1">
+            <BtnDeleteCart data={prod} update={setShow} />
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

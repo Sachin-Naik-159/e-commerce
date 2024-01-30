@@ -1,17 +1,19 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import "./btn.css";
 
-function BtnRemove({ data }) {
+function BtnRemove({ data, update }) {
   const dispatch = useDispatch();
 
-  //Add to cart
+  //Remove from to cart
   const removeCart = () => {
+    update(data.inCart);
     dispatch({ type: "REMOVE_CART", payload: data });
   };
   return (
     <div>
-      <button className="btn btn-warning" onClick={removeCart}>
-        <i className="fa-regular fa-square-minus"></i>
+      <button className="button btn btn-warning" onClick={removeCart}>
+        <i className="fa-solid fa-minus fa-2xs"></i>
       </button>
     </div>
   );

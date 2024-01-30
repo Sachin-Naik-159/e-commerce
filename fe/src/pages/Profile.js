@@ -19,23 +19,27 @@ function Profile() {
       user.password === "" &&
       user.confirmpassword === ""
     ) {
-      toast.error("Enter Value");
+      toast.warning("Enter Value");
     } else {
-      if (user.password === user.confirmpassword) {
-        let resp = await axios.put(`${api_URL}/user/editprofile`, user);
-        if (resp.status === 200) {
-          toast.success(resp.data.message);
-          setUser({
-            name: "",
-            username: "",
-            password: "",
-            confirmpassword: "",
-          });
+      let text = "Do you want to edit your profile";
+      let confirmation = window.confirm(text);
+      if (confirmation === true) {
+        if (user.password === user.confirmpassword) {
+          let resp = await axios.put(`${api_URL}/user/editprofile`, user);
+          if (resp.status === 200) {
+            toast.success(resp.data.message);
+            setUser({
+              name: "",
+              username: "",
+              password: "",
+              confirmpassword: "",
+            });
+          } else {
+            toast.error(resp.data.message);
+          }
         } else {
-          toast.error(resp.data.message);
+          toast.error("Password don't Match");
         }
-      } else {
-        toast.error("Password don't Match");
       }
     }
   };

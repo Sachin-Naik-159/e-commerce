@@ -78,7 +78,7 @@ function Product() {
           <Container className="p-2 mt-4 mb-5 bg-white rounded shadow">
             <h1>{prod.product.name}</h1>
             <hr />
-            <Stars rate={prod.rating} />
+            <Stars rate={prod.rating} type={true} />
             <hr />
             <p>
               <strong>Description:</strong> {prod.product.description}

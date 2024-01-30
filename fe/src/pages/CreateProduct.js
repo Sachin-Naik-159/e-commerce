@@ -1,15 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function CreateProduct() {
   const api_URL = process.env.REACT_APP_BASE_API_URL;
-  //Logged in user
-  const user = useSelector((state) => {
-    return state.userReducer.user;
-  });
+  const navigate = useNavigate();
+
   // Handle Inmage
   const [image, setImage] = useState("");
   const handleFileSelect = (event) => {
@@ -18,17 +16,19 @@ function CreateProduct() {
   };
   const handleImgUpload = async () => {
     let formData = new FormData();
-    formData.append("file", image);
-    const response = await axios.post(`${api_URL}/file/uploadFile`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    // setProduct({
-    //   ...product,
-    //   image: `${api_URL}/file/${response.data.fileName}`,
-    // });
-    return response;
+    if (image !== "") {
+      formData.append("file", image);
+      const response = await axios.post(
+        `${api_URL}/file/uploadFile`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response;
+    }
   };
 
   //Get Catagory
@@ -44,10 +44,18 @@ function CreateProduct() {
     });
   };
 
+  // State for Check box
   const [cstCatagory, setCstCatagory] = useState(false);
+  const changeState = () => {
+    if (cstCatagory) {
+      setCstCatagory(false);
+    } else {
+      setCstCatagory(true);
+    }
+  };
 
-  //Product
-  const [product, setProduct] = useState({
+  //Product State
+  const initialProductState = {
     name: "",
     price: "",
     quantity: "",
@@ -55,25 +63,37 @@ function CreateProduct() {
     catagory: "",
     subcatagory: "",
     image: "",
-  });
+  };
+  const [product, setProduct] = useState(initialProductState);
 
+  // Product Submission
   const subminHandler = async (e) => {
     e.preventDefault();
+    let prod = product;
     let imgRes = "";
-    if (image !== "") {
-      imgRes = await handleImgUpload();
-      // setProduct({
-      //   ...product,
-      //   image: `${api_URL}/file/${imgRes.data.fileName}`,
-      // });
-    }
-    console.log(product);
-    const resp = await axios.post(`${api_URL}/product/${user._id}`, {
-      ...product,
-      image: `${api_URL}/file/${imgRes.data.fileName}`,
-    });
-    if (resp.status === 200) {
-      toast.success(resp.data.message);
+    if (
+      product.name === "" ||
+      product.price === "" ||
+      product.quantity === "" ||
+      product.catagory === ""
+    )
+      toast.warning("Enter Data");
+    else {
+      if (image !== "") {
+        imgRes = await handleImgUpload();
+        prod = {
+          ...product,
+          image: `${api_URL}/file/${imgRes.data.fileName}`,
+        };
+      }
+      let text = "Do you want to create the product";
+      let confirmation = window.confirm(text);
+
+      if (confirmation === true) {
+        const resp = await axios.post(`${api_URL}/product`, prod);
+        toast.success(resp.data.message);
+        navigate("/");
+      }
     }
   };
 
@@ -90,6 +110,7 @@ function CreateProduct() {
         <Col className=" justify-content-center align-items-center">
           <h1 className="text-center">Create Product</h1>
           <Form className="mb-3 mt-5" onSubmit={subminHandler}>
+            {/* Product Name */}
             <Form.Group className="mb-3">
               <Form.Control
                 type="text"
@@ -100,6 +121,7 @@ function CreateProduct() {
                 }
               ></Form.Control>
             </Form.Group>
+            {/* Product Price */}
             <Form.Group className="mb-3">
               <Form.Control
                 type="number"
@@ -110,6 +132,7 @@ function CreateProduct() {
                 }
               ></Form.Control>
             </Form.Group>
+            {/* Product Quantity */}
             <Form.Group className="mb-3">
               <Form.Control
                 type="number"
@@ -120,48 +143,20 @@ function CreateProduct() {
                 }
               ></Form.Control>
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Control
-                as="textarea"
-                rows={3}
-                placeholder="description"
-                value={product.description}
-                onChange={(e) =>
-                  setProduct({ ...product, description: e.target.value })
-                }
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Select
-                aria-label="Default select example"
-                onChange={(e) => {
-                  setProduct({ ...product, catagory: e.target.value });
-                  setCstCatagory(false);
-                }}
-              >
-                <option value="">Choose a catagory</option>
-                {cat.catagory.map((data) => {
-                  return (
-                    <option key={data} value={data}>
-                      {data}
-                    </option>
-                  );
-                })}
-              </Form.Select>
-            </Form.Group>
+            {/* Product Catagory */}
             <Form.Group className="mb-3">
               <Form.Check
                 className="mb-3"
                 type="checkbox"
                 id="cstcat"
-                value={true}
                 label="CustomCatagory"
                 checked={cstCatagory}
-                onChange={(e) => setCstCatagory(e.target.value)}
+                onChange={changeState}
               />
               {cstCatagory ? (
                 <Form.Group className="mb-3">
                   <Form.Control
+                    className="mb-2"
                     type="text"
                     placeholder="Custom Catagory"
                     value={product.catagory}
@@ -179,7 +174,23 @@ function CreateProduct() {
                   ></Form.Control>
                 </Form.Group>
               ) : (
-                <>
+                <Form.Group className="mb-3">
+                  <Form.Select
+                    className="mb-2"
+                    aria-label="Default select example"
+                    onChange={(e) => {
+                      setProduct({ ...product, catagory: e.target.value });
+                    }}
+                  >
+                    <option value="">Choose a catagory</option>
+                    {cat.catagory.map((data) => {
+                      return (
+                        <option key={data} value={data}>
+                          {data}
+                        </option>
+                      );
+                    })}
+                  </Form.Select>
                   <Form.Select
                     aria-label="Default select example"
                     onChange={(e) =>
@@ -195,28 +206,22 @@ function CreateProduct() {
                       );
                     })}
                   </Form.Select>
-                </>
+                </Form.Group>
               )}
             </Form.Group>
-
-            {/* <Form.Group className="mb-3">
-              <Form.Select
-                aria-label="Default select example"
+            {/* Product description */}
+            <Form.Group className="mb-3">
+              <Form.Control
+                as="textarea"
+                rows={3}
+                placeholder="description"
+                value={product.description}
                 onChange={(e) =>
-                  setProduct({ ...product, subcatagory: e.target.value })
+                  setProduct({ ...product, description: e.target.value })
                 }
-              >
-                <option value="">Choose a subcatagory</option>
-                {cat.subcatagory.map((data) => {
-                  return (
-                    <option key={data} value={data}>
-                      {data}
-                    </option>
-                  );
-                })}
-              </Form.Select>
-            </Form.Group> */}
-
+              ></Form.Control>
+            </Form.Group>
+            {/* Product Image */}
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Image</Form.Label>
               <Form.Control type="file" onChange={handleFileSelect} />

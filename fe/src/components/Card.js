@@ -1,5 +1,5 @@
 import React from "react";
-import "./card.css";
+import "./css/card.css";
 import Stars from "./Stars";
 import { useNavigate } from "react-router-dom";
 import BtnAddCart from "./BtnAddCart";

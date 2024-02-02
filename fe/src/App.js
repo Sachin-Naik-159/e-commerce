@@ -16,6 +16,7 @@ import UserList from "./pages/UserList";
 import CreateProduct from "./pages/CreateProduct";
 import ProdAdminList from "./pages/ProdAdminList";
 import EditProduct from "./pages/EditProduct";
+import PaymentMethod from "./pages/PaymentMethod";
 
 function App() {
   function DynamicRouting() {
@@ -52,6 +53,7 @@ function App() {
         <Route path="/address" element={<ShippingAddress />} />
         <Route path="/createproduct" element={<CreateProduct />} />
         <Route path="/prodadminlist" element={<ProdAdminList />} />
+        <Route path="/paymentmethod" element={<PaymentMethod />} />
         <Route path="/editproduct/:id" element={<EditProduct />} />
       </Routes>
     );

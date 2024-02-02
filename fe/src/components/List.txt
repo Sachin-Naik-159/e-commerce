@@ -1,0 +1,29 @@
+            <div className="col-1">
+            <BtnRemove data={prod} update={setinCart} />
+          </div>
+          <div className="col-2">
+            {prod.name}: {prod.inCart}
+          </div>
+          <div className="col-1">
+            <BtnAddCart data={prod} update={setinCart} type={"Cart"} />
+          </div>
+          <div className="col-1"></div>
+          <div className="col-1">
+            <BtnDeleteCart data={prod} update={setShow} />
+          </div>
+
+
+
+
+
+
+
+
+
+          <Col xs={1}>
+                <BtnRemove data={prod} update={setinCart} />
+              </Col>
+              <Col xs={1}>{prod.inCart}</Col>
+              <Col xs={1}>
+                <BtnAddCart data={prod} update={setinCart} type={"Cart"} />
+              </Col>

@@ -21,6 +21,14 @@ function Header() {
   let cart = useSelector((state) => {
     return state.cartReducer.cart;
   });
+  let inCart = () => {
+    var total = 0;
+    for (var i = 0; i < cart.length; i++) {
+      total = total + cart[i].inCart;
+    }
+    return total;
+  };
+
   let admin = false;
   let user = useSelector((state) => {
     return state.userReducer.user;
@@ -76,7 +84,7 @@ function Header() {
               {cart.length === 0 ? (
                 <></>
               ) : (
-                <sup style={{ color: "Red" }}>{cart.length}</sup>
+                <sup style={{ color: "Red" }}>{inCart()}</sup>
               )}
             </Nav.Link>
 
@@ -98,7 +106,7 @@ function Header() {
 
                 {/* Admin's Options */}
                 {admin ? (
-                  <NavDropdown title="Admin" id="basic-nav-dropdown">
+                  <NavDropdown title="Admin Panel" id="basic-nav-dropdown">
                     <NavDropdown.Item href="/userlist">
                       All Users
                     </NavDropdown.Item>

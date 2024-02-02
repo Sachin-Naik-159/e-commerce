@@ -1,5 +1,5 @@
 import React from "react";
-import "./stars.css";
+import "./css/stars.css";
 
 function Stars({ rate, type }) {
   let rating = rate.reduce((a, b) => a + b, 0) / rate.length;

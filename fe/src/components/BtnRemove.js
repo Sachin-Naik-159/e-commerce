@@ -1,14 +1,14 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import "./btn.css";
+import "./css/btn.css";
 
-function BtnRemove({ data, update }) {
+function BtnRemove({ data, rf }) {
   const dispatch = useDispatch();
 
   //Remove from to cart
   const removeCart = () => {
-    update(data.inCart);
     dispatch({ type: "REMOVE_CART", payload: data });
+    rf();
   };
   return (
     <div>

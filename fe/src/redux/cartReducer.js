@@ -2,6 +2,9 @@ import { toast } from "react-toastify";
 
 const initialState = {
   cart: [],
+  address: "",
+  name: "",
+  pay: "",
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -50,6 +53,17 @@ export const cartReducer = (state = initialState, action) => {
         state.cart.splice(index, 1);
         toast.success("Deleted");
       } else toast.error("Not in cart");
+      localStorage.setItem("cart", JSON.stringify(state));
+      return state;
+
+    case "ADDRESS_UPDATE":
+      state.address = action.payload.address;
+      state.name = action.payload.name;
+      localStorage.setItem("cart", JSON.stringify(state));
+      return state;
+
+    case "PAY_TYPE":
+      state.pay = action.payload;
       localStorage.setItem("cart", JSON.stringify(state));
       return state;
 

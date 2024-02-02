@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Button, Col, Container, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 function ShippingAddress() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const api_URL = process.env.REACT_APP_BASE_API_URL;
   const [user, setUser] = useState({
     name: "",
     address: "",
@@ -18,8 +18,23 @@ function ShippingAddress() {
 
   const subminHandler = async (e) => {
     e.preventDefault();
-    let address = `${user.address}, ${user.city}, ${user.state}, ${user.country}-${user.postalcode}`;
-    console.log(address);
+    if (
+      user.name === "" ||
+      user.address === "" ||
+      user.city === "" ||
+      user.state === "" ||
+      user.postalcode === "" ||
+      user.country === ""
+    ) {
+      toast.warning("Please fill form");
+    } else {
+      let address = `${user.address}, ${user.city}, ${user.state}, ${user.country}-${user.postalcode}`;
+      dispatch({
+        type: "ADDRESS_UPDATE",
+        payload: { address, name: user.name },
+      });
+      navigate("/paymentmethod");
+    }
   };
 
   return (

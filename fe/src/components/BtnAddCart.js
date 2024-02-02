@@ -1,16 +1,16 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import "./btn.css";
+import "./css/btn.css";
 
-function BtnAddCart({ data, update, type }) {
+function BtnAddCart({ data, type, rf }) {
   const dispatch = useDispatch();
 
   //Add to cart
   const addCart = () => {
-    if (update !== undefined) {
-      update(data.inCart);
-    }
     dispatch({ type: "UPDATE_CART", payload: { ...data, inCart: 1 } });
+    if (type === "Cart") {
+      rf();
+    }
   };
   return (
     <div>

@@ -1,21 +1,22 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import "./css/btn.css";
 
-function BtnDeleteCart({ data, update }) {
+function BtnDeleteCart({ data, rf }) {
   const dispatch = useDispatch();
 
   //Add to cart
   const deleteCart = () => {
-    update(false);
     dispatch({ type: "DELETE_CART", payload: data });
+    rf();
   };
   return (
-    <div>
-      <button className="btn btn-danger" onClick={deleteCart}>
-        <i
-          className="fa-regular fa-trash-can fa-xs"
-          style={{ color: "black" }}
-        ></i>
+    <div className="d-flex flex-row-reverse">
+      <button
+        className="button btn2 btn btn-outline-danger"
+        onClick={deleteCart}
+      >
+        <i className="fa-regular fa-trash-can" style={{ color: "black" }}></i>
       </button>
     </div>
   );

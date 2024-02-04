@@ -89,9 +89,11 @@ function EditProduct() {
     let confirmation = window.confirm(text);
 
     if (confirmation === true) {
-      let resp = await axios.delete(`${api_URL}/product/${prod_id}`);
-      toast.success(resp.data.message);
-      navigate("/");
+      try {
+        let resp = await axios.delete(`${api_URL}/product/${prod_id}`);
+        toast.success(resp.data.message);
+        navigate("/");
+      } catch (err) {}
     }
   };
 

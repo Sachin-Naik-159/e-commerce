@@ -95,7 +95,7 @@ function Header() {
                   <NavDropdown.Item href="/profile">
                     User Profile
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/userallorders">
                     Order History
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
@@ -110,7 +110,7 @@ function Header() {
                     <NavDropdown.Item href="/userlist">
                       All Users
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.1">
+                    <NavDropdown.Item href="/adminallorders">
                       All Orders
                     </NavDropdown.Item>
                     <NavDropdown.Divider />

@@ -18,9 +18,7 @@ function UserList() {
       if (resp.status === 200) {
         setUser(resp.data);
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {

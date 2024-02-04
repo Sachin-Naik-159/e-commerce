@@ -34,7 +34,6 @@ function Cart() {
   };
 
   let checkOut = () => {
-    // console.log(localStorage.getItem("token") === null);
     if (cart.length === 0) {
       toast.warning("Empty Cart");
     } else {
@@ -46,9 +45,7 @@ function Cart() {
     }
   };
 
-  useEffect(() => {
-    // eslint-disable-next-line
-  }, [reducer]);
+  useEffect(() => {}, [reducer]);
 
   return (
     <div>
@@ -56,7 +53,7 @@ function Cart() {
       <Row>
         <Col xs={12} md={8}>
           {cart.map((e, i) => (
-            <List prod={e} key={i} rf={refresh} />
+            <List prod={e} key={i} rf={refresh} type={"cart"} />
           ))}
           {cart.length === 0 ? (
             <div className="d-grid text-center">

@@ -16,13 +16,17 @@ const productSchema = new Schema(
       type: Number,
       required: true,
     },
+    inCart: {
+      type: Number,
+      default: 0,
+    },
     catagory: {
       type: String,
       required: true,
     },
     subcatagory: {
       type: String,
-      required: true,
+      required: false,
     },
     description: {
       type: String,

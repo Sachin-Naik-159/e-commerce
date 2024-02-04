@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, CardImg, Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  CardImg,
+  Col,
+  Container,
+  Form,
+  Row,
+} from "react-bootstrap";
 import Stars from "../components/Stars";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -41,7 +49,7 @@ function Product() {
   // Give review
   const reviewHandler = async (e) => {
     e.preventDefault();
-    console.log(review);
+
     if (review.rate !== 0) {
       let resp = await axios.put(`${api_URL}/product/rate/${id}`, review);
       if (resp.status === 200) {
@@ -108,14 +116,16 @@ function Product() {
       </Row>
 
       {/* Reviews */}
-      {prod.rating.length > 0 ? (
-        <Row className="p-5">
-          <h1 className="d-flex justify-content-center">Reviews</h1>
+      <Row className="p-5">
+        <h1 className="d-flex justify-content-center">Reviews</h1>
+        {prod.rating.length > 0 ? (
           <Review data={prod.product.rating} />
-        </Row>
-      ) : (
-        <></>
-      )}
+        ) : (
+          <Alert className="mt-3" variant={"info"}>
+            No Reviews
+          </Alert>
+        )}
+      </Row>
 
       {/* Rate product */}
       {localStorage.getItem("user") !== null ? (

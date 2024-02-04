@@ -28,7 +28,7 @@ const getOrder = async (req, res) => {
       populate: {
         path: "productId",
         model: "ProductModel",
-        select: "_id name price catagory image",
+        select: "_id name price image",
       },
     });
     res.status(200).json(orderInDB);
@@ -41,8 +41,10 @@ const getOrder = async (req, res) => {
 const allOrders = async (req, res) => {
   try {
     let query = { custId: req.user._id };
-    if (req.user.isAdmin) {
-      query = {};
+    if (req.params.type !== "user") {
+      if (req.user.isAdmin) {
+        query = {};
+      }
     }
     let ordersInDB = await OrderModel.find(query).populate({
       path: "custId",
@@ -58,6 +60,31 @@ const allOrders = async (req, res) => {
 //Create order
 const createOrder = async (req, res) => {
   try {
+    let { amount, pay, name, address, cart } = req.body;
+    let products = [];
+
+    cart.map(
+      (e) =>
+        (products = [...products, { productId: e._id, quantity: e.inCart }])
+    );
+    cart.forEach(async (item) => {
+      await ProductModel.findOneAndUpdate(
+        { _id: item._id },
+        { $set: { quantity: item.quantity - item.inCart } },
+        { new: true }
+      ).exec();
+    });
+
+    const newOrder = new OrderModel({
+      custId: req.user._id,
+      amount: Number(amount),
+      pay_method: pay,
+      name,
+      address,
+      products,
+    });
+    const resp = await newOrder.save();
+    res.status(201).json({ message: "Order Created", resp });
   } catch (err) {
     throw err;
   }

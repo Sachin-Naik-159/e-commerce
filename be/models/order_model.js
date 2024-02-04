@@ -9,9 +9,17 @@ const orderSchema = new Schema(
       type: Number,
       required: true,
     },
+    pay_method: {
+      type: String,
+      required: true,
+    },
     deal_status: {
       type: String,
-      default: "Processing",
+      default: "Not Paid",
+    },
+    name: {
+      type: String,
+      required: true,
     },
     address: {
       type: String,

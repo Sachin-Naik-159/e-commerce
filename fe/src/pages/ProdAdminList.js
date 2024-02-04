@@ -46,12 +46,15 @@ function ProdAdminList() {
   }, []);
   return (
     <div>
-      <div className="row mt-5 ">
+      <div className="d-grid text-center mt-3">
+        <h1>Edit Product</h1>
+      </div>
+      <div className="row mt-2">
         <table className="table table-striped table-bordered">
           <thead>
             <tr className="row">
               <th className="col-1 text-center">#</th>
-              <th className="col-3 text-center">img</th>
+              <th className="col-3 text-center">IMG</th>
               <th className="col-2 text-center">Name</th>
               <th className="col-2 text-center">Price</th>
               <th className="col-2 text-center">Quantity</th>

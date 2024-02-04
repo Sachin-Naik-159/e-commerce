@@ -5,6 +5,7 @@ const initialState = {
   address: "",
   name: "",
   pay: "",
+  amount: 0,
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -63,7 +64,8 @@ export const cartReducer = (state = initialState, action) => {
       return state;
 
     case "PAY_TYPE":
-      state.pay = action.payload;
+      state.pay = action.payload.pay;
+      state.amount = action.payload.amount;
       localStorage.setItem("cart", JSON.stringify(state));
       return state;
 

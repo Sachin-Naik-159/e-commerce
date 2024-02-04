@@ -21,15 +21,22 @@ const addProduct = async (req, res) => {
         description,
         image,
       } = req.body;
-      if (name !== "" || price !== "" || quantity !== "" || catagory !== "") {
+      if (
+        name !== "" ||
+        price !== "" ||
+        quantity !== "" ||
+        catagory !== "" ||
+        subcatagory !== ""
+      ) {
         const newProduct = new ProductModel({
           name,
           price,
           quantity,
           catagory,
-          subcatagory: setUndef(subcatagory),
+          subcatagory,
           description: setUndef(description),
           image: setUndef(image),
+          inCart: 0,
         });
 
         //Finding similar product

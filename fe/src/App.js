@@ -4,19 +4,22 @@ import { useDispatch } from "react-redux";
 import { ToastContainer, Zoom } from "react-toastify";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 
+import Header from "./components/common/Header";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Cart from "./components/Cart";
 import Product from "./pages/Product";
-import Header from "./components/common/Header";
-import ShippingAddress from "./pages/ShippingAddress";
 import Profile from "./pages/Profile";
 import UserList from "./pages/UserList";
+import AllOrders from "./pages/AllOrders";
+import EditProduct from "./pages/EditProduct";
+import OrderDetail from "./pages/OrderDetail";
+import OrderPreview from "./pages/OrderPreview";
 import CreateProduct from "./pages/CreateProduct";
 import ProdAdminList from "./pages/ProdAdminList";
-import EditProduct from "./pages/EditProduct";
 import PaymentMethod from "./pages/PaymentMethod";
+import ShippingAddress from "./pages/ShippingAddress";
 
 function App() {
   function DynamicRouting() {
@@ -51,6 +54,10 @@ function App() {
         <Route path="/userlist" element={<UserList />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/address" element={<ShippingAddress />} />
+        <Route path="/userallorders" element={<AllOrders />} />
+        <Route path="/adminallorders" element={<AllOrders />} />
+        <Route path="/orderpreview" element={<OrderPreview />} />
+        <Route path="/orderdetail/:id" element={<OrderDetail />} />
         <Route path="/createproduct" element={<CreateProduct />} />
         <Route path="/prodadminlist" element={<ProdAdminList />} />
         <Route path="/paymentmethod" element={<PaymentMethod />} />
@@ -58,6 +65,7 @@ function App() {
       </Routes>
     );
   }
+
   return (
     <BrowserRouter>
       <ToastContainer
@@ -65,7 +73,7 @@ function App() {
         autoClose={1000}
         hideProgressBar={false}
         newestOnTop={true}
-        closeOnClick
+        closeOnClick={true}
         rtl={true}
         pauseOnFocusLoss={false}
         draggable

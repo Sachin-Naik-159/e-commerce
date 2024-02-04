@@ -1,27 +1,37 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function PaymentMethod() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let cart = useSelector((state) => {
+    return state.cartReducer.cart;
+  });
+  let subTotal = () => {
+    var total = 0;
+    for (var i = 0; i < cart.length; i++) {
+      total = total + cart[i].inCart * cart[i].price;
+    }
+    return total;
+  };
+
   const type = [
-    { value: "paypal", label: "PayPal" },
-    { value: "stripe", label: "Stripe" },
+    { value: "PayPal", label: "PayPal" },
+    { value: "Stripe", label: "Stripe" },
   ];
   const [value, setValue] = useState(null);
 
   const finalPage = () => {
-    console.log(value);
     if (value !== null) {
       dispatch({
         type: "PAY_TYPE",
-        payload: value,
+        payload: { pay: value, amount: ((subTotal() + 40) / 80).toFixed(2) },
       });
-      navigate("/");
+      navigate("/orderpreview");
     } else toast.warning("Select mode of payment");
   };
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import "./css/btn.css";
 
 function BtnAddCart({ data, type, rf }) {
@@ -7,11 +8,14 @@ function BtnAddCart({ data, type, rf }) {
 
   //Add to cart
   const addCart = () => {
-    dispatch({ type: "UPDATE_CART", payload: { ...data, inCart: 1 } });
-    if (type === "Cart") {
-      rf();
-    }
+    if (data.quantity > data.inCart) {
+      dispatch({ type: "UPDATE_CART", payload: { ...data, inCart: 1 } });
+      if (type === "Cart") {
+        rf();
+      }
+    } else toast.warning("Limited Stock");
   };
+
   return (
     <div>
       {type === "Cart" ? (

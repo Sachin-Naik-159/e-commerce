@@ -11,9 +11,9 @@ const {
 const router = express.Router();
 
 router.put("/editprofile", protectectedResource, editprofile);
+router.post("/createorder", protectectedResource, createOrder);
 router.get("/getorder/:id", protectectedResource, getOrder);
-router.post("/createorder/:id", protectectedResource, createOrder);
-router.get("/allorders", protectectedResource, allOrders);
+router.get("/allorders/:type", protectectedResource, allOrders);
 router.get("/allusers", protectectedResource, allUsers);
 
 module.exports = router;

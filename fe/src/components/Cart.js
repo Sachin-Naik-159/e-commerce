@@ -52,15 +52,16 @@ function Cart() {
       <h1 className="mt-2 mb-4 mx-5">Shopping Cart</h1>
       <Row>
         <Col xs={12} md={8}>
-          {cart.map((e, i) => (
-            <List prod={e} key={i} rf={refresh} type={"cart"} />
-          ))}
           {cart.length === 0 ? (
             <div className="d-grid text-center">
               <h2>Empty Cart</h2>
             </div>
           ) : (
-            <></>
+            <>
+              {cart.map((e, i) => (
+                <List prod={e} key={i} rf={refresh} type={"cart"} />
+              ))}
+            </>
           )}
         </Col>
         <Col md={4}>

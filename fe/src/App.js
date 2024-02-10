@@ -25,6 +25,7 @@ import Success from "./pages/Success";
 function App() {
   function DynamicRouting() {
     const dispatch = useDispatch();
+    const pub_url = process.env.PUBLIC_URL;
 
     useEffect(() => {
       const userData = JSON.parse(localStorage.getItem("user"));
@@ -49,25 +50,61 @@ function App() {
     return (
       <Routes>
         {/* Pament Status Pages */}
-        <Route path="/paysuccess" element={<Success />} />
+        <Route basename={pub_url} path="/paysuccess" element={<Success />} />
 
-        <Route path="/" element={<Home />} />
-        <Route path="/search" element={<Home />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/userlist" element={<UserList />} />
-        <Route path="/product/:id" element={<Product />} />
-        <Route path="/address" element={<ShippingAddress />} />
-        <Route path="/userallorders" element={<AllOrders />} />
-        <Route path="/adminallorders" element={<AllOrders />} />
-        <Route path="/orderpreview" element={<OrderPreview />} />
-        <Route path="/orderdetail/:id" element={<OrderDetail />} />
-        <Route path="/createproduct" element={<CreateProduct />} />
-        <Route path="/prodadminlist" element={<ProdAdminList />} />
-        <Route path="/paymentmethod" element={<PaymentMethod />} />
-        <Route path="/editproduct/:id" element={<EditProduct />} />
+        <Route basename={pub_url} path="/" element={<Home />} />
+        <Route basename={pub_url} path="/search" element={<Home />} />
+        <Route basename={pub_url} path="/cart" element={<Cart />} />
+        <Route basename={pub_url} path="/login" element={<Login />} />
+        <Route basename={pub_url} path="/signup" element={<Signup />} />
+        <Route basename={pub_url} path="/profile" element={<Profile />} />
+        <Route basename={pub_url} path="/userlist" element={<UserList />} />
+        <Route basename={pub_url} path="/product/:id" element={<Product />} />
+        <Route
+          basename={pub_url}
+          path="/address"
+          element={<ShippingAddress />}
+        />
+        <Route
+          basename={pub_url}
+          path="/userallorders"
+          element={<AllOrders />}
+        />
+        <Route
+          basename={pub_url}
+          path="/adminallorders"
+          element={<AllOrders />}
+        />
+        <Route
+          basename={pub_url}
+          path="/orderpreview"
+          element={<OrderPreview />}
+        />
+        <Route
+          basename={pub_url}
+          path="/orderdetail/:id"
+          element={<OrderDetail />}
+        />
+        <Route
+          basename={pub_url}
+          path="/createproduct"
+          element={<CreateProduct />}
+        />
+        <Route
+          basename={pub_url}
+          path="/prodadminlist"
+          element={<ProdAdminList />}
+        />
+        <Route
+          basename={pub_url}
+          path="/paymentmethod"
+          element={<PaymentMethod />}
+        />
+        <Route
+          basename={pub_url}
+          path="/editproduct/:id"
+          element={<EditProduct />}
+        />
       </Routes>
     );
   }

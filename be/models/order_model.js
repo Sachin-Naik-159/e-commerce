@@ -17,6 +17,9 @@ const orderSchema = new Schema(
       type: String,
       default: "Not Paid",
     },
+    payment_id: {
+      type: String,
+    },
     name: {
       type: String,
       required: true,

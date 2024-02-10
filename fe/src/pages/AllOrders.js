@@ -19,7 +19,6 @@ const AllOrders = () => {
       }
       if (resp.status === 200) {
         setOrderList(resp.data);
-        console.log(resp.data);
       }
     } catch (err) {}
   };
@@ -36,7 +35,7 @@ const AllOrders = () => {
           <th className="col-1 text-center">#</th>
           <th className="col-3 text-center">ID</th>
           <th className="col-2 text-center">Date</th>
-          <th className="col-2 text-center">Total($)</th>
+          <th className="col-2 text-center">Total</th>
           <th className="col-1 text-center">Paid</th>
           <th className="col-1 text-center">Delivered</th>
           <th className="col-2 text-center">Action</th>
@@ -62,9 +61,28 @@ const AllOrders = () => {
               </td>
               <td className="col-2 text-center">{e.amount}</td>
               <td className="col-1 text-center">
-                {e.deal_status === "Not Paid" ? <>N</> : <>Y</>}
+                {e.deal_status === "Not Paid" ? (
+                  <>
+                    <i
+                      className="fa-solid fa-n fa-xs"
+                      style={{ color: "#ff0000" }}
+                    ></i>
+                  </>
+                ) : (
+                  <>
+                    <i
+                      className="fa-solid fa-y fa-xs"
+                      style={{ color: "#028a0f" }}
+                    ></i>
+                  </>
+                )}
               </td>
-              <td className="col-1 text-center">N</td>
+              <td className="col-1 text-center">
+                <i
+                  className="fa-solid fa-n fa-xs"
+                  style={{ color: "#ff0000" }}
+                ></i>
+              </td>
               <td className="col-2 text-center">
                 <button
                   className="btn btn-warning"

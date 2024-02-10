@@ -7,10 +7,12 @@ import { toast } from "react-toastify";
 function CreateProduct() {
   const api_URL = process.env.REACT_APP_BASE_API_URL;
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // Handle Inmage
   const [image, setImage] = useState("");
   const handleFileSelect = (event) => {
+    setLoading(true);
     const img = event.target.files[0];
     setImage(img);
   };
@@ -69,6 +71,7 @@ function CreateProduct() {
   // Product Submission
   const subminHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     let prod = product;
     let imgRes = "";
     if (
@@ -91,10 +94,13 @@ function CreateProduct() {
 
       if (confirmation === true) {
         const resp = await axios.post(`${api_URL}/product`, prod);
+        setLoading(false);
         toast.success(resp.data.message);
         navigate("/");
       }
+      setLoading(false);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -226,9 +232,17 @@ function CreateProduct() {
               <Form.Label>Image</Form.Label>
               <Form.Control type="file" onChange={handleFileSelect} />
             </Form.Group>
-            <Button type="submit" variant="dark">
-              Create
-            </Button>
+            {loading ? (
+              <div className="col-md-12 mt-3 text-center">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : (
+              <Button type="submit" variant="dark">
+                Create
+              </Button>
+            )}
           </Form>
         </Col>
       </Container>

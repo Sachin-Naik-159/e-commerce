@@ -29,7 +29,7 @@ function PaymentMethod() {
     if (value !== null) {
       dispatch({
         type: "PAY_TYPE",
-        payload: { pay: value, amount: ((subTotal() + 40) / 80).toFixed(2) },
+        payload: { pay: value, amount: subTotal().toFixed(2) },
       });
       navigate("/orderpreview");
     } else toast.warning("Select mode of payment");

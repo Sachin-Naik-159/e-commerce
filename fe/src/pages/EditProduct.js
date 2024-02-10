@@ -8,10 +8,12 @@ function EditProduct() {
   const api_URL = process.env.REACT_APP_BASE_API_URL;
   const prod_id = window.location.pathname.split("/")[2];
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // Handle Inmage
   const [image, setImage] = useState("");
   const handleFileSelect = (event) => {
+    setLoading(true);
     const img = event.target.files[0];
     setImage(img);
   };
@@ -64,6 +66,7 @@ function EditProduct() {
   //Edit a product
   const subminHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     let imgRes = "";
     let prod = { ...product };
     if (image !== "") {
@@ -76,10 +79,13 @@ function EditProduct() {
       if (confirmation === true) {
         const resp = await axios.put(`${api_URL}/product/${prod_id}`, prod);
         if (resp.status === 200) {
+          setLoading(false);
           toast.success(resp.data.message);
         }
       }
+      setLoading(false);
     } else toast.warning("Enter Data");
+    setLoading(false);
   };
 
   //Delete a product
@@ -294,9 +300,17 @@ function EditProduct() {
                   <Form.Label>Image</Form.Label>
                   <Form.Control type="file" onChange={handleFileSelect} />
                 </Form.Group>
-                <Button type="submit" variant="dark">
-                  Edit
-                </Button>
+                {loading ? (
+                  <div className="col-md-12 mt-3 text-center">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                ) : (
+                  <Button type="submit" variant="dark">
+                    Edit
+                  </Button>
+                )}
               </Form>
             </Col>
           </Container>

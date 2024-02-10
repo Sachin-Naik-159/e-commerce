@@ -186,7 +186,7 @@ const getCatagory = async (req, res) => {
   let products = await ProductModel.find();
   let catagory = products.map((p) => p.catagory);
   let subcatagory = products.map((p) => p.subcatagory);
-  res.json({
+  res.status(200).json({
     catagory: [...new Set(catagory)],
     subcatagory: [...new Set(subcatagory)],
   });

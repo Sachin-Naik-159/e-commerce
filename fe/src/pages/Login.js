@@ -9,6 +9,7 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const api_URL = process.env.REACT_APP_BASE_API_URL;
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({ email: "", password: "" });
   let cart = useSelector((state) => {
     return state.cartReducer.cart;
@@ -16,12 +17,14 @@ function Login() {
 
   const subminHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (user.email === "" || user.password === "") {
       toast.warning("Enter Value");
     } else {
       try {
         let resp = await axios.post(`${api_URL}/auth/login`, user);
         if (resp.status === 200) {
+          setLoading(false);
           //Authentication header
           axios.defaults.headers.common["Authorization"] =
             "Bearer " + resp.data.result.token;
@@ -34,6 +37,7 @@ function Login() {
             navigate("/");
           } else navigate("/cart");
         }
+        setLoading(false);
       } catch (err) {
         if (err.response.status === 401) {
           toast.error(err.response.data.message);
@@ -67,9 +71,17 @@ function Login() {
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
               ></Form.Control>
             </Form.Group>
-            <Button type="submit" variant="dark">
-              Login
-            </Button>
+            {loading ? (
+              <div className="col-md-12 mt-3 text-center">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : (
+              <Button type="submit" variant="dark">
+                Login
+              </Button>
+            )}
           </Form>
           <Form.Text className="mb-5">
             Don't have an account?

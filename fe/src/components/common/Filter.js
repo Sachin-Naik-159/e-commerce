@@ -15,11 +15,15 @@ function Filter() {
   });
 
   const getCatagory = async () => {
-    let resp = await axios.get(`${api_URL}/product/getCatagory`);
-    setCat({
-      catagory: resp.data.catagory,
-      subcatagory: resp.data.subcatagory,
-    });
+    try {
+      let resp = await axios.get(`${api_URL}/product/getCatagory`);
+      setCat({
+        catagory: resp.data.catagory,
+        subcatagory: resp.data.subcatagory,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

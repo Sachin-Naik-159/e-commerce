@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,8 @@ function OrderPreview() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const api_URL = process.env.REACT_APP_BASE_API_URL;
+  const [loading, setLoading] = useState(false);
+
   let state = useSelector((state) => {
     return state.cartReducer;
   });
@@ -29,13 +31,16 @@ function OrderPreview() {
     let confirmation = window.confirm(text);
 
     if (confirmation === true) {
+      setLoading(true);
       try {
         let resp = await axios.post(`${api_URL}/user/createorder`, state);
         if (resp.status === 201) {
+          setLoading(false);
           toast.success(resp.data.message);
           dispatch({ type: "CHECKOUT_CART" });
           navigate(`/orderdetail/${resp.data.resp._id}`);
         }
+        setLoading(false);
       } catch (err) {}
     }
   };
@@ -102,17 +107,25 @@ function OrderPreview() {
               </Card.Text>
               <hr />
               <Card.Text className="mt-3">
-                <b>Shipping :</b> ₹ 40
+                <b>Shipping :</b> ₹ 0
               </Card.Text>
               <hr />
               <Card.Text>
-                <b>Order Total :</b> $ {((subTotal() + 40) / 80).toFixed(2)}
+                <b>Order Total :</b> ₹ {subTotal()}
               </Card.Text>
             </Card.Body>
             <Card.Footer className="text-center">
-              <Button variant="warning" onClick={placeOrder}>
-                Place Order
-              </Button>
+              {loading ? (
+                <div className="col-md-12 mt-3 text-center">
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              ) : (
+                <Button variant="warning" onClick={placeOrder}>
+                  Place Order
+                </Button>
+              )}
             </Card.Footer>
           </Card>
         </Col>

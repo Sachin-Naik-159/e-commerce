@@ -6,13 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import "react-toastify/dist/ReactToastify.css";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+
+const paypalcli = process.env.REACT_APP_PAYPAL_CLI;
+const paypalConfig = { clientId: paypalcli, currency: "USD" };
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <PayPalScriptProvider options={paypalConfig}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </PayPalScriptProvider>
   </React.StrictMode>
 );
 

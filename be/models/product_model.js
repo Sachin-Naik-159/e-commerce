@@ -41,7 +41,7 @@ const productSchema = new Schema(
       {
         ratedBy: { type: ObjectId, ref: "UserModel" },
         comment: { type: String },
-        rate: { type: Number },
+        rate: { type: Number, min: 1, max: 5 },
         createdAt: { type: Date, default: Date.now },
       },
     ],

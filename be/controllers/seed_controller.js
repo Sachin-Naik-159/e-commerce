@@ -34,7 +34,7 @@ const seedUsers = async (req, res) => {
       res.status(201).json({ message: "User Created", resp });
     } else {
       found.password = "admin";
-      res.json({ message: "Already Created", found });
+      res.status(400).json({ message: "Already Created", found });
     }
   } catch (err) {
     throw err;
@@ -57,7 +57,7 @@ const seedProducts = async (req, res) => {
       ]);
       res.status(201).json({ message: "Products Created", resp });
     } else {
-      res.json({ message: "Already Created", found });
+      res.status(400).json({ message: "Already Created", found });
     }
   } catch (err) {
     throw err;

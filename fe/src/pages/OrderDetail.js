@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Card, Col, Row } from "react-bootstrap";
+import { Alert, Card, Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import axios from "axios";
+
+import PayButton from "../components/PayButton";
 import List from "../components/List";
+import PayBtnStripe from "../components/PayBtnStripe";
 
 function OrderDetail() {
+  const api_URL = process.env.REACT_APP_BASE_API_URL;
+  const id = window.location.pathname.split("/")[2];
   let user = useSelector((state) => {
     return state.userReducer.user;
   });
-  const api_URL = process.env.REACT_APP_BASE_API_URL;
-  const id = window.location.pathname.split("/")[2];
   const [order, setOrder] = useState({
     _id: "",
     custId: "",
@@ -28,6 +31,7 @@ function OrderDetail() {
       let resp = await axios.get(`${api_URL}/user/getorder/${id}`);
       if (resp.status === 200) {
         setOrder(resp.data);
+        console.log(resp.data);
         let prod = resp.data.products;
         let sum = 0;
         for (var i = 0; i < prod.length; i++) {
@@ -35,7 +39,6 @@ function OrderDetail() {
         }
         setTotal(sum);
       }
-      console.log(order);
     } catch (err) {}
   };
 
@@ -120,23 +123,32 @@ function OrderDetail() {
               </Card.Text>
               <hr />
               <Card.Text className="mt-3">
-                <b>Shipping :</b> ₹ 40
+                <b>Shipping :</b> ₹ 0
               </Card.Text>
               <hr />
               <Card.Text>
-                <b>Order Total :</b> $ {order.amount}
-              </Card.Text>
-            </Card.Body>
-            {order.custId === user._id ? (
-              <Card.Footer className="text-center">
                 {order.pay_method === "Stripe" ? (
                   <>
-                    <Button variant="info" disabled>
-                      <i class="fa-brands fa-stripe fa-2xl"></i>
-                    </Button>
+                    <b>Order Total :</b> ₹ {total}
                   </>
                 ) : (
-                  <>PayPal</>
+                  <>
+                    <b>Order Total :</b> $ {(order.amount / 80).toFixed(2)}
+                  </>
+                )}
+              </Card.Text>
+            </Card.Body>
+            {order.custId === user._id && order.deal_status === "Not Paid" ? (
+              <Card.Footer className="text-center">
+                {order.pay_method === "Stripe" ? (
+                  <PayBtnStripe orderDetail={{ order }} />
+                ) : (
+                  <PayButton
+                    orderDetail={{
+                      order_id: id,
+                      amount: (order.amount / 80).toFixed(2),
+                    }}
+                  />
                 )}
               </Card.Footer>
             ) : (

@@ -15,6 +15,7 @@ app.use(express.json()); //Enabling Cross-origin sharing
 app.use("/api/v1/auth", require("./routes/auth_routers"));
 app.use("/api/v1/user", require("./routes/user_routers"));
 app.use("/api/v1/product", require("./routes/product_routers"));
+app.use("/api/v1/payment", require("./routes/payment_routers"));
 app.use("/api/v1/plant", require("./routes/seed_routers"));
 app.use("/api/v1/file", require("./routes/file_routers"));
 

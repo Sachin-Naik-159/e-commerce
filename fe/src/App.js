@@ -20,6 +20,7 @@ import CreateProduct from "./pages/CreateProduct";
 import ProdAdminList from "./pages/ProdAdminList";
 import PaymentMethod from "./pages/PaymentMethod";
 import ShippingAddress from "./pages/ShippingAddress";
+import Success from "./pages/Success";
 
 function App() {
   function DynamicRouting() {
@@ -28,6 +29,7 @@ function App() {
     useEffect(() => {
       const userData = JSON.parse(localStorage.getItem("user"));
       dispatch({ type: "REFRESH_CART" });
+      dispatch({ type: "REFRESH_ORDER" });
       if (userData) {
         //Authentication
         axios.defaults.headers.common["Authorization"] =
@@ -38,6 +40,7 @@ function App() {
       } else {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("order");
         dispatch({ type: "LOGIN_ERROR" });
       }
       // eslint-disable-next-line
@@ -45,6 +48,9 @@ function App() {
 
     return (
       <Routes>
+        {/* Pament Status Pages */}
+        <Route path="/paysuccess" element={<Success />} />
+
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
@@ -81,6 +87,7 @@ function App() {
         theme="light"
         transition={Zoom}
       />
+
       <div className="app">
         <Header />
         <DynamicRouting />

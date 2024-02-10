@@ -90,6 +90,22 @@ const createOrder = async (req, res) => {
   }
 };
 
+//UpdatePay by id
+const updatePay = async (req, res) => {
+  try {
+    const _id = req.params.id;
+    let { paymentId } = req.body;
+    let resp = await OrderModel.findOneAndUpdate(
+      { _id },
+      { $set: { payment_id: paymentId, deal_status: "Paid" } },
+      { new: true }
+    ).exec();
+    res.status(200).json({ message: "Pament Success", resp });
+  } catch (err) {
+    throw err;
+  }
+};
+
 //Get all users
 const allUsers = async (req, res) => {
   try {
@@ -135,6 +151,7 @@ module.exports = {
   getOrder,
   allOrders,
   createOrder,
+  updatePay,
   allUsers,
   editprofile,
 };

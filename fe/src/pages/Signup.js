@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 function Signup() {
   const navigate = useNavigate();
   const api_URL = process.env.REACT_APP_BASE_API_URL;
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -15,6 +16,7 @@ function Signup() {
   });
   const subminHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (
       user.email === "" ||
       user.password === "" ||
@@ -26,10 +28,12 @@ function Signup() {
       try {
         let resp = await axios.post(`${api_URL}/auth/register`, user);
         if (resp.status === 201) {
+          setLoading(false);
           toast.success(resp.data.message);
           setUser({ name: "", email: "", username: "", password: "" });
           navigate("/login");
         }
+        setLoading(false);
       } catch (err) {
         if (err.response.status === 500 || err.response.status === 400) {
           toast.error(err.response.data.message);
@@ -78,9 +82,17 @@ function Signup() {
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
               ></Form.Control>
             </Form.Group>
-            <Button type="submit" variant="dark">
-              Sign Up
-            </Button>
+            {loading ? (
+              <div className="col-md-12 mt-3 text-center">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : (
+              <Button type="submit" variant="dark">
+                Sign Up
+              </Button>
+            )}
           </Form>
           <Form.Text className="mb-3">
             Already Registered?

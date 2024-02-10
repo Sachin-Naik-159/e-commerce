@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 function Profile() {
   const api_URL = process.env.REACT_APP_BASE_API_URL;
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
     name: "",
     username: "",
@@ -13,6 +14,7 @@ function Profile() {
   });
   const subminHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (
       user.name === "" &&
       user.username === "" &&
@@ -36,12 +38,16 @@ function Profile() {
             });
           } else {
             toast.error(resp.data.message);
+            setLoading(false);
           }
         } else {
           toast.error("Password don't Match");
+          setLoading(false);
         }
       }
+      setLoading(false);
     }
+    setLoading(false);
   };
   return (
     <div className="d-flex align-items-center rounded mt-5">
@@ -87,9 +93,17 @@ function Profile() {
                 }
               ></Form.Control>
             </Form.Group>
-            <Button type="submit" variant="dark">
-              Edit
-            </Button>
+            {loading ? (
+              <div className="col-md-12 mt-3 text-center">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : (
+              <Button type="submit" variant="dark">
+                Edit
+              </Button>
+            )}
           </Form>
         </Col>
       </Container>

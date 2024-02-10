@@ -20,6 +20,7 @@ function Login() {
     setLoading(true);
     if (user.email === "" || user.password === "") {
       toast.warning("Enter Value");
+      setLoading(false);
     } else {
       try {
         let resp = await axios.post(`${api_URL}/auth/login`, user);
@@ -41,9 +42,11 @@ function Login() {
       } catch (err) {
         if (err.response.status === 401) {
           toast.error(err.response.data.message);
+          setLoading(false);
         }
       }
     }
+    setLoading(false);
   };
 
   return (

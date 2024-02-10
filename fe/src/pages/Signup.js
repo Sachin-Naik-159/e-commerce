@@ -24,6 +24,7 @@ function Signup() {
       user.name === ""
     ) {
       toast.warning("Enter Value");
+      setLoading(false);
     } else {
       try {
         let resp = await axios.post(`${api_URL}/auth/register`, user);
@@ -37,10 +38,12 @@ function Signup() {
       } catch (err) {
         if (err.response.status === 500 || err.response.status === 400) {
           toast.error(err.response.data.message);
+          setLoading(false);
         }
       }
     }
   };
+
   return (
     <div className="d-flex align-items-center rounded mt-5">
       <Container

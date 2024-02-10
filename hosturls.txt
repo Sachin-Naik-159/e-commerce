@@ -1,0 +1,2 @@
+server = https://server-e-com.onrender.com/api/v1
+client = https://cheerful-cuchufli-4b5201.netlify.app/
